@@ -1,0 +1,25 @@
+#/bin/env sh
+
+web='./parin_package/packages/web/source'
+lib="$web/libraylib.a"
+shell="$web/emscripten_shell.html"
+
+# I think something weird is happening with the given args.
+# The args before the signle `\` where added just to make it compile. Not sure why I have to do that.
+# The args after the single `\` make sense and should be here.
+opend --target=emscripten app.d -ofindex.html \
+    parin/*.d \
+    joka/*.d \
+    -L=-L$web \
+\
+    -L=$lib \
+    -L=-sEXPORTED_RUNTIME_METHODS=HEAPF32 \
+    -L=-DPLATFORM_WEB \
+    -L=-sUSE_GLFW=3 \
+    -L=-sERROR_ON_UNDEFINED_SYMBOLS=0 \
+    -L=--shell-file \
+    -L=$shell \
+
+# NOTE:
+#  I usually compile Parin with ldc2 like this:
+#  
